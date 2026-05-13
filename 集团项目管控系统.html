@@ -1,0 +1,2535 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>集团项目管控系统</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* 主色:深邃navy,商务感 */
+  --bg: #f5f3ee;             /* 米白底,有温度的纸感 */
+  --surface: #ffffff;
+  --ink: #1a1f2e;            /* 主文字 */
+  --ink-2: #4a5163;          /* 次文字 */
+  --ink-3: #8a8f9e;          /* 弱文字 */
+  --line: #e4e2dc;           /* 分割线 */
+  --line-strong: #1a1f2e;    /* 强分割线 */
+
+  --primary: #1a1f2e;
+  --accent: #b8924a;         /* 黄铜金,点缀 */
+  --accent-soft: #f0e6d2;
+
+  /* 灯色 */
+  --green: #5a7c4a;
+  --green-bg: #e8efe1;
+  --yellow: #c89020;
+  --yellow-bg: #faf0d6;
+  --red: #a8392c;
+  --red-bg: #f3dad4;
+
+  /* 等级标签 */
+  --level-a: #a8392c;
+  --level-b: #c89020;
+  --level-c: #5a7c4a;
+  --level-d: #4a5163;
+
+  --serif: "Noto Serif SC", "Songti SC", "SimSun", serif;
+  --sans: "Inter", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --mono: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+body { min-height: 100vh; }
+
+/* === 顶部导航 === */
+.topbar {
+  background: var(--primary);
+  color: #fff;
+  padding: 14px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--primary);
+}
+.topbar .brand {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+.topbar .brand-cn {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 2px;
+}
+.topbar .brand-en {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.topbar .nav {
+  display: flex;
+  gap: 2px;
+}
+.topbar .nav a {
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  font-size: 13px;
+  padding: 6px 14px;
+  border-radius: 0;
+  transition: all 0.15s;
+  letter-spacing: 0.5px;
+}
+.topbar .nav a:hover { color: #fff; }
+.topbar .nav a.active {
+  color: var(--accent);
+  border-bottom: 1px solid var(--accent);
+}
+.topbar .meta {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 1px;
+}
+
+/* === 通用容器 === */
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 32px;
+}
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 28px;
+  padding-bottom: 18px;
+  border-bottom: 2px solid var(--line-strong);
+}
+.page-title {
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--ink);
+}
+.page-subtitle {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-3);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+.page-meta {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-3);
+  letter-spacing: 1px;
+  text-align: right;
+}
+.page-meta strong { color: var(--ink); font-weight: 600; }
+
+/* === 首页 === */
+.home-hero {
+  text-align: center;
+  padding: 90px 32px 60px;
+}
+.home-hero .ornament {
+  font-family: var(--serif);
+  color: var(--accent);
+  font-size: 24px;
+  letter-spacing: 8px;
+  margin-bottom: 24px;
+}
+.home-hero h1 {
+  font-family: var(--serif);
+  font-size: 52px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: var(--ink);
+  margin-bottom: 12px;
+}
+.home-hero .en {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--ink-3);
+  letter-spacing: 5px;
+  text-transform: uppercase;
+}
+.home-hero .divider {
+  width: 60px;
+  height: 1px;
+  background: var(--accent);
+  margin: 32px auto;
+}
+.home-hero .tagline {
+  font-family: var(--serif);
+  font-size: 16px;
+  color: var(--ink-2);
+  letter-spacing: 2px;
+  line-height: 1.8;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.home-portals {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  max-width: 1100px;
+  margin: 40px auto;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.portal {
+  padding: 60px 50px;
+  text-decoration: none;
+  color: var(--ink);
+  transition: background 0.2s;
+  position: relative;
+  display: block;
+}
+.portal:first-child { border-right: 1px solid var(--line); }
+.portal:hover { background: var(--surface); }
+.portal .label {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.portal .title {
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  margin-bottom: 14px;
+}
+.portal .desc {
+  font-size: 13px;
+  color: var(--ink-2);
+  line-height: 1.8;
+  margin-bottom: 28px;
+}
+.portal .enter {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--ink);
+  padding-bottom: 4px;
+  display: inline-block;
+}
+.portal:hover .enter { color: var(--accent); border-color: var(--accent); }
+
+.home-tips {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 30px 0;
+  font-size: 12px;
+  color: var(--ink-3);
+  font-family: var(--mono);
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+/* === 表单页 === */
+.form-card {
+  background: var(--surface);
+  padding: 40px 48px;
+  border: 1px solid var(--line);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.section {
+  margin-bottom: 32px;
+}
+.section:last-child { margin-bottom: 0; }
+.section-title {
+  font-family: var(--serif);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--ink);
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--line-strong);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-title .num {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--accent);
+  font-weight: 500;
+}
+.section-title .note {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-3);
+  letter-spacing: 1px;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.field-grid {
+  display: grid;
+  gap: 16px 20px;
+}
+.field-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.field-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+
+.field {
+  display: flex;
+  flex-direction: column;
+}
+.field label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--ink-2);
+  margin-bottom: 6px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-family: var(--mono);
+}
+.field label .req { color: var(--red); margin-left: 2px; }
+.field input,
+.field select,
+.field textarea {
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  padding: 8px 12px;
+  outline: none;
+  transition: all 0.15s;
+  border-radius: 0;
+}
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-color: var(--ink);
+  background: #fff;
+}
+.field input[type="number"] { font-family: var(--mono); }
+.field textarea { resize: vertical; min-height: 60px; }
+.field .hint {
+  font-size: 10px;
+  color: var(--ink-3);
+  margin-top: 4px;
+  font-family: var(--mono);
+  letter-spacing: 0.5px;
+}
+
+/* 健康度表 */
+.health-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.health-table th,
+.health-table td {
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: middle;
+}
+.health-table th {
+  background: var(--bg);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+.health-table td .dim {
+  font-weight: 600;
+  font-family: var(--serif);
+}
+.health-table input {
+  border: none;
+  background: transparent;
+  font-family: var(--mono);
+  font-size: 13px;
+  width: 100%;
+  outline: none;
+  padding: 2px 0;
+}
+.health-table input:focus { background: var(--accent-soft); }
+
+.lamp-preview {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  padding: 3px 10px;
+  border-radius: 0;
+}
+.lamp-preview .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.lamp-preview.green { background: var(--green-bg); color: var(--green); }
+.lamp-preview.green .dot { background: var(--green); }
+.lamp-preview.yellow { background: var(--yellow-bg); color: var(--yellow); }
+.lamp-preview.yellow .dot { background: var(--yellow); }
+.lamp-preview.red { background: var(--red-bg); color: var(--red); }
+.lamp-preview.red .dot { background: var(--red); }
+.lamp-preview.empty { color: var(--ink-3); }
+.lamp-preview.empty .dot { background: var(--line); }
+
+.rule-note {
+  font-size: 11px;
+  color: var(--ink-3);
+  font-family: var(--mono);
+  margin-top: 8px;
+  letter-spacing: 0.5px;
+  padding: 8px 12px;
+  background: var(--accent-soft);
+  border-left: 2px solid var(--accent);
+}
+
+/* 风险表 */
+.risk-row {
+  display: grid;
+  grid-template-columns: 30px 1fr 100px 1.2fr 100px 110px;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+}
+.risk-row.head {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-3);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--line-strong);
+}
+.risk-row .idx {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--accent);
+  font-weight: 600;
+  text-align: center;
+}
+.risk-row input,
+.risk-row select {
+  border: 1px solid var(--line);
+  background: var(--bg);
+  padding: 6px 8px;
+  font-size: 13px;
+  font-family: inherit;
+  outline: none;
+  width: 100%;
+}
+.risk-row input:focus,
+.risk-row select:focus { border-color: var(--ink); background: #fff; }
+
+/* 支持事项 */
+.support-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 10px;
+  align-items: start;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+.support-row textarea {
+  min-height: 60px;
+  resize: vertical;
+}
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--ink-2);
+}
+.checkbox-group label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: inherit;
+  font-size: 12px;
+  text-transform: none;
+  color: var(--ink-2);
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.checkbox-group input[type="checkbox"] {
+  accent-color: var(--accent);
+}
+
+/* 提交栏 */
+.submit-bar {
+  margin-top: 32px;
+  padding: 20px 0;
+  border-top: 2px solid var(--line-strong);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.submit-bar .info {
+  font-size: 12px;
+  color: var(--ink-3);
+  font-family: var(--mono);
+  letter-spacing: 0.5px;
+}
+.btn {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 12px 28px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-decoration: none;
+  display: inline-block;
+}
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+}
+.btn-primary:hover { background: var(--accent); }
+.btn-secondary {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--ink);
+}
+.btn-secondary:hover {
+  background: var(--ink);
+  color: #fff;
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--ink-2);
+  padding: 8px 16px;
+  font-size: 11px;
+  border: 1px solid var(--line);
+}
+.btn-ghost:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+/* === 仪表板 === */
+.dash-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding: 14px 20px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+.dash-toolbar .filters {
+  display: flex;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 12px;
+}
+.dash-toolbar .filter-btn,
+.filter-btn {
+  padding: 6px 14px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  cursor: pointer;
+  letter-spacing: 1px;
+  color: var(--ink-2);
+  transition: all 0.15s;
+  font-family: var(--mono);
+  font-size: 12px;
+}
+.dash-toolbar .filter-btn:hover,
+.filter-btn:hover { border-color: var(--ink); color: var(--ink); }
+.dash-toolbar .filter-btn.active,
+.filter-btn.active {
+  background: var(--ink);
+  color: #fff;
+  border-color: var(--ink);
+}
+.dash-toolbar .actions { display: flex; gap: 8px; }
+
+/* KPI卡片 */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  margin-bottom: 24px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+.kpi {
+  padding: 24px 28px;
+  border-right: 1px solid var(--line);
+  position: relative;
+}
+.kpi:last-child { border-right: none; }
+.kpi .label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-2);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.kpi .label .indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.kpi .value {
+  font-family: var(--serif);
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--ink);
+}
+.kpi .value-suffix {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--ink-3);
+  margin-left: 6px;
+  font-weight: 400;
+}
+.kpi .delta {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-3);
+  margin-top: 8px;
+  letter-spacing: 0.5px;
+}
+.kpi.green .value { color: var(--green); }
+.kpi.yellow .value { color: var(--yellow); }
+.kpi.red .value { color: var(--red); }
+
+/* 行动建议 */
+.actions-panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  margin-bottom: 24px;
+}
+.actions-panel .head {
+  padding: 14px 24px;
+  background: var(--primary);
+  color: #fff;
+  font-family: var(--serif);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.actions-panel .head .stamp {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 2px;
+  font-weight: 400;
+}
+.action-item {
+  display: grid;
+  grid-template-columns: 200px 1fr auto;
+  align-items: center;
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--line);
+  gap: 20px;
+}
+.action-item:last-child { border-bottom: none; }
+.action-item .tag {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.action-item .tag .dot {
+  width: 8px; height: 8px; border-radius: 50%;
+}
+.action-item .tag.red { background: var(--red-bg); color: var(--red); }
+.action-item .tag.red .dot { background: var(--red); }
+.action-item .tag.yellow { background: var(--yellow-bg); color: var(--yellow); }
+.action-item .tag.yellow .dot { background: var(--yellow); }
+.action-item .tag.neutral { background: var(--accent-soft); color: var(--accent); }
+.action-item .tag.neutral .dot { background: var(--accent); }
+.action-item .content {
+  font-size: 13px;
+  color: var(--ink);
+  line-height: 1.6;
+}
+.action-item .content strong {
+  font-family: var(--mono);
+  color: var(--ink);
+  font-weight: 600;
+}
+.action-item .ctrl {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-3);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.action-item .ctrl:hover { color: var(--accent); }
+
+/* 两栏 */
+.two-col {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+/* 子公司表 */
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+.panel .head {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--line-strong);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.panel .head .title {
+  font-family: var(--serif);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 2px;
+}
+.panel .head .note {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-3);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.sub-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.sub-table th, .sub-table td {
+  padding: 10px 14px;
+  text-align: center;
+  font-size: 13px;
+  border-bottom: 1px solid var(--line);
+}
+.sub-table th {
+  background: var(--bg);
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--ink-2);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--line-strong);
+}
+.sub-table th:first-child, .sub-table td:first-child { text-align: left; padding-left: 20px; }
+.sub-table td.name { font-weight: 600; }
+.sub-table td.num { font-family: var(--mono); font-weight: 500; }
+.sub-table .health-bar {
+  display: inline-block;
+  width: 60px;
+  height: 6px;
+  background: var(--line);
+  position: relative;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+.sub-table .health-bar-fill {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  background: var(--green);
+}
+.sub-table .health-bar-fill.warning { background: var(--yellow); }
+.sub-table .health-bar-fill.danger { background: var(--red); }
+.sub-table .health-score {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+}
+.sub-table tr:hover td { background: var(--bg); }
+
+/* 风险概况(右侧) */
+.risk-summary { padding: 20px; }
+.risk-summary .ring {
+  width: 160px;
+  height: 160px;
+  margin: 0 auto 20px;
+  position: relative;
+}
+.risk-summary .ring-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.risk-summary .ring-num {
+  font-family: var(--serif);
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1;
+}
+.risk-summary .ring-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-3);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+.legend {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 12px;
+}
+.legend-item:last-child { border-bottom: none; }
+.legend-item .lt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ink-2);
+}
+.legend-item .lt .dot { width: 8px; height: 8px; border-radius: 50%; }
+.legend-item .rt {
+  font-family: var(--mono);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* 项目明细表 */
+.detail-panel { background: var(--surface); border: 1px solid var(--line); margin-bottom: 24px; }
+.detail-panel .head {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--line-strong);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.detail-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.detail-table th, .detail-table td {
+  padding: 11px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--line);
+  vertical-align: middle;
+}
+.detail-table th {
+  background: var(--bg);
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--ink-2);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--line-strong);
+  position: sticky;
+  top: 0;
+}
+.detail-table tr:hover td { background: var(--bg); }
+.detail-table td.name {
+  font-weight: 600;
+  cursor: pointer;
+}
+.detail-table td.name:hover { color: var(--accent); }
+.detail-table .num { font-family: var(--mono); }
+.level-badge {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  line-height: 22px;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  border-radius: 0;
+}
+.level-badge.A { background: var(--level-a); }
+.level-badge.B { background: var(--level-b); }
+.level-badge.C { background: var(--level-c); }
+.level-badge.D { background: var(--level-d); }
+
+.lamp {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  padding: 3px 10px;
+  text-transform: uppercase;
+}
+.lamp.green { background: var(--green-bg); color: var(--green); }
+.lamp.yellow { background: var(--yellow-bg); color: var(--yellow); }
+.lamp.red { background: var(--red-bg); color: var(--red); }
+.lamp .dot { width: 7px; height: 7px; border-radius: 50%; }
+.lamp.green .dot { background: var(--green); }
+.lamp.yellow .dot { background: var(--yellow); }
+.lamp.red .dot { background: var(--red); }
+
+.delta-up { color: var(--red); }
+.delta-down { color: var(--green); }
+.delta-flat { color: var(--ink-3); }
+
+.empty-state {
+  padding: 80px 20px;
+  text-align: center;
+  color: var(--ink-3);
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+.empty-state .icon {
+  font-family: var(--serif);
+  font-size: 36px;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.empty-state .hint {
+  margin-top: 14px;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+
+/* 抽屉(项目详情) */
+.drawer-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(26,31,46,0.4);
+  z-index: 100;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.drawer-overlay.open { display: block; opacity: 1; }
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 640px;
+  max-width: 90vw;
+  background: var(--surface);
+  z-index: 101;
+  transform: translateX(100%);
+  transition: transform 0.25s;
+  overflow-y: auto;
+  border-left: 1px solid var(--line-strong);
+}
+.drawer.open { transform: translateX(0); }
+.drawer .head {
+  padding: 24px 32px;
+  border-bottom: 2px solid var(--line-strong);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+}
+.drawer .head .title-block .title {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+.drawer .head .title-block .meta {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-3);
+  letter-spacing: 1px;
+}
+.drawer .close {
+  background: none;
+  border: 1px solid var(--line);
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 14px;
+}
+.drawer .body { padding: 24px 32px; }
+.drawer .dr-section { margin-bottom: 28px; }
+.drawer .dr-section .lbl {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin-bottom: 8px;
+}
+.drawer .stat-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border: 1px solid var(--line);
+}
+.drawer .stat-cell {
+  padding: 14px;
+  border-right: 1px solid var(--line);
+  text-align: center;
+}
+.drawer .stat-cell:last-child { border-right: none; }
+.drawer .stat-cell .v {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 700;
+}
+.drawer .stat-cell .l {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--ink-3);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+/* 提示框 */
+.toast {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  background: var(--primary);
+  color: #fff;
+  padding: 14px 24px;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 1px;
+  z-index: 200;
+  transform: translateY(120%);
+  transition: transform 0.25s;
+}
+.toast.show { transform: translateY(0); }
+.toast.success { background: var(--green); }
+
+/* 隐藏滚动条 */
+.detail-table-wrap { overflow-x: auto; }
+
+/* 装饰元素 */
+.ornament-line {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0;
+}
+.ornament-line::before, .ornament-line::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+.ornament-line .text {
+  font-family: var(--serif);
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 4px;
+}
+
+/* 响应式 */
+@media (max-width: 1100px) {
+  .two-col { grid-template-columns: 1fr; }
+  .home-portals { grid-template-columns: 1fr; }
+  .home-portals .portal:first-child { border-right: none; border-bottom: 1px solid var(--line); }
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .kpi:nth-child(2) { border-right: none; }
+}
+@media (max-width: 700px) {
+  .field-grid.cols-3, .field-grid.cols-2 { grid-template-columns: 1fr; }
+  .risk-row { grid-template-columns: 1fr; gap: 6px; }
+  .risk-row.head { display: none; }
+  .container { padding: 20px 16px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== 顶部导航 ===== -->
+<div class="topbar">
+  <div class="brand">
+    <span class="brand-cn">集团项目管控系统</span>
+    <span class="brand-en">GROUP · PROJECT · CONTROL</span>
+  </div>
+  <div class="nav" id="topnav">
+    <a href="#/" data-view="home">首页</a>
+    <a href="#/report" data-view="report">事业部填报</a>
+    <a href="#/dashboard" data-view="dashboard">CEO仪表板</a>
+  </div>
+  <div class="meta" id="topMeta">DEMO MODE · LOCAL</div>
+</div>
+
+<!-- ===== 视图容器 ===== -->
+<div id="view-home" class="view">
+  <div class="home-hero">
+    <div class="ornament">❖ ❖ ❖</div>
+    <h1>集团项目管控</h1>
+    <div class="en">PROJECT GOVERNANCE SYSTEM</div>
+    <div class="divider"></div>
+    <div class="tagline">
+      让CEO三十秒掌握全集团项目动态<br>
+      让每一盏红灯都被看见,每一次延期都有回应
+    </div>
+  </div>
+
+  <div class="home-portals">
+    <a href="#/report" class="portal" data-view="report">
+      <div class="label">入口 ONE · 事业部</div>
+      <div class="title">项目周报填报</div>
+      <div class="desc">
+        每周五17:00前由项目负责人填写并提交。<br>
+        系统将自动计算灯色并汇入集团仪表板。
+      </div>
+      <div class="enter">进入填报 →</div>
+    </a>
+    <a href="#/dashboard" class="portal" data-view="dashboard">
+      <div class="label">入口 TWO · 集团</div>
+      <div class="title">CEO 仪表板</div>
+      <div class="desc">
+        实时展示全集团项目健康度、红黄绿灯分布、事业部绩效排名。<br>
+        周一上午30分钟看板会的主用界面。
+      </div>
+      <div class="enter">查看仪表板 →</div>
+    </a>
+  </div>
+
+  <div class="home-tips">
+    DEMO 演示提示 · 数据保存于浏览器本地 · 可打开两个标签页模拟双角色协作
+  </div>
+</div>
+
+
+<!-- ===== 填报页 ===== -->
+<div id="view-report" class="view" style="display:none">
+  <div class="container">
+    <div class="page-header">
+      <div>
+        <div class="page-title">项目周报 · 填报</div>
+        <div class="page-subtitle">WEEKLY PROJECT REPORT · SUBMISSION</div>
+      </div>
+      <div class="page-meta">
+        当前期次 <strong id="periodNow">--</strong><br>
+        提交截止 <strong>每周五 17:00</strong>
+      </div>
+    </div>
+
+    <form id="reportForm" class="form-card">
+
+      <!-- 基础信息 -->
+      <div class="section">
+        <div class="section-title">
+          <span class="num">§ 01</span>
+          基础信息
+          <span class="note">BASIC INFO</span>
+        </div>
+        <div class="field-grid cols-3">
+          <div class="field">
+            <label>所属事业部<span class="req">*</span></label>
+            <select name="subCompany" id="fldSubCompany" required>
+              <option value="">请选择事业部</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>项目名称<span class="req">*</span></label>
+            <select name="projectName" id="fldProjectName" required>
+              <option value="">请先选择事业部</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>项目等级<span class="req">*</span></label>
+            <select name="level" id="fldLevel" required>
+              <option value="">请选择</option>
+              <option value="A">A · 战略级</option>
+              <option value="B">B · 重点级</option>
+              <option value="C">C · 常规级</option>
+              <option value="D">D · 创新级</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>项目负责人<span class="req">*</span></label>
+            <select name="owner" id="fldOwner" required>
+              <option value="">请先选择项目</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>启动日期</label>
+            <input type="date" name="startDate">
+          </div>
+          <div class="field">
+            <label>计划完成</label>
+            <input type="date" name="endDate">
+          </div>
+        </div>
+      </div>
+
+      <!-- 健康度 -->
+      <div class="section">
+        <div class="section-title">
+          <span class="num">§ 02</span>
+          项目健康度
+          <span class="note">HEALTH · AUTO-CALC</span>
+        </div>
+        <table class="health-table">
+          <thead>
+            <tr>
+              <th style="width:120px">维度</th>
+              <th style="width:140px">计划</th>
+              <th style="width:140px">实际</th>
+              <th style="width:140px">偏差/状态</th>
+              <th>简要说明</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="dim">进度</span></td>
+              <td><input type="number" min="0" max="100" name="plannedPct" placeholder="0-100" id="plannedPct">  <span style="color:var(--ink-3);font-family:var(--mono);font-size:12px">%</span></td>
+              <td><input type="number" min="0" max="100" name="actualPct" placeholder="0-100" id="actualPct"> <span style="color:var(--ink-3);font-family:var(--mono);font-size:12px">%</span></td>
+              <td><span id="progressLamp" class="lamp-preview empty"><span class="dot"></span>—</span></td>
+              <td><input type="text" name="progressNote" placeholder="如:供应商如期交付"></td>
+            </tr>
+            <tr>
+              <td><span class="dim">预算</span></td>
+              <td><input type="number" min="0" name="totalBudget" placeholder="总预算" id="totalBudget"> <span style="color:var(--ink-3);font-family:var(--mono);font-size:12px">万</span></td>
+              <td><input type="number" min="0" name="usedBudget" placeholder="已花费" id="usedBudget"> <span style="color:var(--ink-3);font-family:var(--mono);font-size:12px">万</span></td>
+              <td><span id="budgetLamp" class="lamp-preview empty"><span class="dot"></span>—</span></td>
+              <td><input type="text" name="budgetNote" placeholder="如:预算可控"></td>
+            </tr>
+            <tr>
+              <td><span class="dim">里程碑</span></td>
+              <td><input type="text" name="milestonePlan" placeholder="本期目标"></td>
+              <td><input type="text" name="milestoneActual" placeholder="达成情况"></td>
+              <td>
+                <select name="milestoneLamp" id="milestoneLamp" style="border:1px solid var(--line);padding:4px 8px;font-family:var(--mono);font-size:11px;background:var(--bg)">
+                  <option value="">—</option>
+                  <option value="green">●  绿</option>
+                  <option value="yellow">●  黄</option>
+                  <option value="red">●  红</option>
+                </select>
+              </td>
+              <td><input type="text" name="milestoneNote" placeholder="说明"></td>
+            </tr>
+            <tr>
+              <td><span class="dim">质量交付</span></td>
+              <td><input type="text" name="qualityPlan" placeholder="验收标准"></td>
+              <td><input type="text" name="qualityActual" placeholder="实测情况"></td>
+              <td>
+                <select name="qualityLamp" id="qualityLamp" style="border:1px solid var(--line);padding:4px 8px;font-family:var(--mono);font-size:11px;background:var(--bg)">
+                  <option value="">—</option>
+                  <option value="green">●  绿</option>
+                  <option value="yellow">●  黄</option>
+                  <option value="red">●  红</option>
+                </select>
+              </td>
+              <td><input type="text" name="qualityNote" placeholder="说明"></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="rule-note">
+          灯色规则:偏差 &lt;10% 绿  ·  10-20% 黄(事业部负责人处理)  ·  &gt;20% 红(必须升级至CEO)
+        </div>
+      </div>
+
+      <!-- 本期进展 -->
+      <div class="section">
+        <div class="section-title">
+          <span class="num">§ 03</span>
+          本期进展 & 下期计划
+          <span class="note">PROGRESS · NEXT</span>
+        </div>
+        <div class="field-grid cols-2">
+          <div class="field">
+            <label>本期已完成关键事项(最多3条)</label>
+            <textarea name="thisWeekProgress" rows="4" placeholder="1. &#10;2. &#10;3. "></textarea>
+          </div>
+          <div class="field">
+            <label>下期重点工作(最多3条)</label>
+            <textarea name="nextWeekPlan" rows="4" placeholder="1. &#10;2. &#10;3. "></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- TOP3 风险 -->
+      <div class="section">
+        <div class="section-title">
+          <span class="num">§ 04</span>
+          Top 3 风险及应对
+          <span class="note">RISKS</span>
+        </div>
+        <div class="risk-row head">
+          <div>#</div>
+          <div>风险描述</div>
+          <div>影响等级</div>
+          <div>应对措施</div>
+          <div>责任人</div>
+          <div>截止日</div>
+        </div>
+        <div id="riskRows"></div>
+      </div>
+
+      <!-- 需CEO支持 -->
+      <div class="section">
+        <div class="section-title">
+          <span class="num">§ 05</span>
+          需集团 / CEO 支持事项
+          <span class="note">ESCALATION</span>
+        </div>
+        <div style="font-size:11px;color:var(--ink-3);font-family:var(--mono);margin-bottom:10px;letter-spacing:0.5px">
+          没有就写"无",不要堆砌。越具体越好。
+        </div>
+        <div id="supportRows"></div>
+      </div>
+
+      <!-- 隐藏的提交日期 -->
+      <input type="hidden" name="submitDate" id="submitDate">
+
+      <div class="submit-bar">
+        <div class="info">
+          <span id="autoSaveHint">未填写</span> · 数据本地缓存,刷新不丢失
+        </div>
+        <div style="display:flex;gap:10px">
+          <button type="button" class="btn btn-ghost" id="loadSampleBtn">加载示例数据</button>
+          <button type="button" class="btn btn-secondary" id="resetBtn">重置表单</button>
+          <button type="submit" class="btn btn-primary">提交至集团PMO</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<!-- ===== 仪表板 ===== -->
+<div id="view-dashboard" class="view" style="display:none">
+  <div class="container">
+    <div class="page-header">
+      <div>
+        <div class="page-title">集团项目仪表板</div>
+        <div class="page-subtitle">EXECUTIVE DASHBOARD · WEEKLY REVIEW</div>
+      </div>
+      <div class="page-meta">
+        数据更新于 <strong id="lastUpdate">--</strong><br>
+        共 <strong id="totalSubmissions">0</strong> 份周报
+      </div>
+    </div>
+
+    <div class="dash-toolbar">
+      <div class="filters" style="font-family:var(--mono);font-size:12px;color:var(--ink-3);letter-spacing:1.5px">
+        实时反映集团所有事业部上报的项目状态 · 数据由各项目负责人提交,系统自动汇总
+      </div>
+      <div class="actions">
+        <button class="btn btn-ghost" id="seedBtn">重置演示数据</button>
+        <button class="btn btn-ghost" id="exportBtn">导出 JSON</button>
+        <button class="btn btn-ghost" id="clearBtn">清空所有数据</button>
+      </div>
+    </div>
+
+    <!-- KPI -->
+    <div class="kpi-grid">
+      <div class="kpi">
+        <div class="label"><span class="indicator" style="background:var(--ink)"></span>项目总数 · TOTAL</div>
+        <div class="value" id="kpiTotal">0</div>
+        <div class="delta" id="kpiTotalDelta">—</div>
+      </div>
+      <div class="kpi green">
+        <div class="label"><span class="indicator" style="background:var(--green)"></span>绿灯 · GREEN</div>
+        <div class="value" id="kpiGreen">0</div>
+        <div class="delta" id="kpiGreenDelta">—</div>
+      </div>
+      <div class="kpi yellow">
+        <div class="label"><span class="indicator" style="background:var(--yellow)"></span>黄灯 · YELLOW</div>
+        <div class="value" id="kpiYellow">0</div>
+        <div class="delta" id="kpiYellowDelta">—</div>
+      </div>
+      <div class="kpi red">
+        <div class="label"><span class="indicator" style="background:var(--red)"></span>红灯 · RED</div>
+        <div class="value" id="kpiRed">0</div>
+        <div class="delta" id="kpiRedDelta">—</div>
+      </div>
+    </div>
+
+    <!-- 行动建议 -->
+    <div class="actions-panel">
+      <div class="head">
+        <span>CEO 本周行动建议</span>
+        <span class="stamp">AUTO-GENERATED</span>
+      </div>
+      <div id="actionsBody"></div>
+    </div>
+
+    <!-- 子公司表 + 风险概况 -->
+    <div class="two-col">
+      <div class="panel">
+        <div class="head">
+          <span class="title">各事业部健康度</span>
+          <span class="note">SUBSIDIARY · PERFORMANCE</span>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="sub-table">
+            <thead>
+              <tr>
+                <th>事业部</th>
+                <th>项目数</th>
+                <th>● 绿</th>
+                <th>● 黄</th>
+                <th>● 红</th>
+                <th>红灯率</th>
+                <th>健康度评分</th>
+              </tr>
+            </thead>
+            <tbody id="subTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="head">
+          <span class="title">本周风险概况</span>
+          <span class="note">RISK · OVERVIEW</span>
+        </div>
+        <div class="risk-summary">
+          <div class="ring">
+            <svg viewBox="0 0 100 100" width="100%" height="100%">
+              <circle cx="50" cy="50" r="42" stroke="var(--line)" stroke-width="6" fill="none"/>
+              <circle id="ringRed" cx="50" cy="50" r="42" stroke="var(--red)" stroke-width="6" fill="none"
+                stroke-dasharray="0 264" stroke-dashoffset="66" transform="rotate(-90 50 50)" stroke-linecap="butt"/>
+              <circle id="ringYellow" cx="50" cy="50" r="42" stroke="var(--yellow)" stroke-width="6" fill="none"
+                stroke-dasharray="0 264" stroke-dashoffset="0" transform="rotate(-90 50 50)" stroke-linecap="butt"/>
+              <circle id="ringGreen" cx="50" cy="50" r="42" stroke="var(--green)" stroke-width="6" fill="none"
+                stroke-dasharray="0 264" stroke-dashoffset="0" transform="rotate(-90 50 50)" stroke-linecap="butt"/>
+            </svg>
+            <div class="ring-center">
+              <div class="ring-num" id="ringTotal">0</div>
+              <div class="ring-label">PROJECTS</div>
+            </div>
+          </div>
+          <div class="legend" id="ringLegend">
+            <!-- 动态生成 -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 项目明细 -->
+    <div class="detail-panel">
+      <div class="head" style="flex-direction:column;align-items:stretch;gap:12px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span class="title">项目明细</span>
+          <span class="note" id="detailCount">DETAIL TABLE · CLICK FOR INFO</span>
+        </div>
+        <div class="filters" style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+          <span style="font-family:var(--mono);font-size:10px;color:var(--ink-3);letter-spacing:2px;padding:4px 6px 4px 0">筛选 ·</span>
+          <button class="filter-btn active" data-filter="all">全部</button>
+          <button class="filter-btn" data-filter="red"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--red);margin-right:5px;vertical-align:middle"></span>仅红灯</button>
+          <button class="filter-btn" data-filter="yellow"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--yellow);margin-right:5px;vertical-align:middle"></span>仅黄灯</button>
+          <button class="filter-btn" data-filter="green"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);margin-right:5px;vertical-align:middle"></span>仅绿灯</button>
+          <button class="filter-btn" data-filter="A">仅A类项目</button>
+          <button class="filter-btn" data-filter="needCEO">需CEO决策</button>
+        </div>
+      </div>
+      <div class="detail-table-wrap">
+        <table class="detail-table">
+          <thead>
+            <tr>
+              <th style="width:38px">#</th>
+              <th>项目名称</th>
+              <th style="width:130px">事业部</th>
+              <th style="width:50px">等级</th>
+              <th style="width:80px">负责人</th>
+              <th style="width:70px">进度</th>
+              <th style="width:80px">进度偏差</th>
+              <th style="width:90px">预算/已用</th>
+              <th style="width:80px">综合灯</th>
+              <th>Top 1 风险</th>
+              <th style="width:80px">需CEO</th>
+            </tr>
+          </thead>
+          <tbody id="detailTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 抽屉:项目详情 -->
+<div class="drawer-overlay" id="drawerOverlay"></div>
+<div class="drawer" id="drawer">
+  <div class="head">
+    <div class="title-block">
+      <div class="title" id="drTitle">--</div>
+      <div class="meta" id="drMeta">--</div>
+    </div>
+    <button class="close" id="drClose">×</button>
+  </div>
+  <div class="body" id="drBody"></div>
+</div>
+
+<!-- 提示 -->
+<div class="toast" id="toast">已提交</div>
+
+
+<script>
+/* ============================================================
+ * 数据层:localStorage
+ * ============================================================ */
+const STORAGE_KEY = 'projectReports';
+
+function getAllReports() {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+  } catch (e) {
+    return [];
+  }
+}
+function saveReports(arr) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+}
+function addReport(rec) {
+  const arr = getAllReports();
+  arr.push(rec);
+  saveReports(arr);
+}
+
+/* ============================================================
+ * 路由
+ * ============================================================ */
+function showView(viewName) {
+  document.querySelectorAll('.view').forEach(v => v.style.display = 'none');
+  const target = document.getElementById('view-' + viewName);
+  if (target) target.style.display = 'block';
+  document.querySelectorAll('#topnav a').forEach(a => {
+    a.classList.toggle('active', a.dataset.view === viewName);
+  });
+  if (viewName === 'dashboard') renderDashboard();
+  if (viewName === 'report') initReportForm();
+}
+
+function route() {
+  const hash = location.hash.replace(/^#\//, '') || 'home';
+  showView(hash);
+}
+window.addEventListener('hashchange', route);
+
+/* ============================================================
+ * 灯色计算
+ * ============================================================ */
+function calcProgressLamp(planned, actual) {
+  if (planned === '' || actual === '' || planned == null || actual == null) return null;
+  const diff = actual - planned;  // 负数=滞后
+  if (diff <= -20) return 'red';
+  if (diff <= -10) return 'yellow';
+  return 'green';
+}
+function calcBudgetLamp(totalBudget, usedBudget, plannedPct) {
+  if (!totalBudget || usedBudget == null || plannedPct == null) return null;
+  // 已花费占比 - 计划进度,正数=超前花钱
+  const usedPct = (usedBudget / totalBudget) * 100;
+  const diff = usedPct - plannedPct;
+  if (diff >= 20) return 'red';
+  if (diff >= 10) return 'yellow';
+  return 'green';
+}
+function combineLamp(...lamps) {
+  const valid = lamps.filter(l => l);
+  if (valid.length === 0) return null;
+  if (valid.includes('red')) return 'red';
+  if (valid.includes('yellow')) return 'yellow';
+  return 'green';
+}
+function lampLabel(l) {
+  return { green: '绿', yellow: '黄', red: '红' }[l] || '—';
+}
+
+/* ============================================================
+ * 填报页
+ * ============================================================ */
+const DRAFT_KEY = 'reportDraft';
+let reportFormInited = false;
+
+// 项目字典:事业部 -> 项目列表(项目名 + 负责人 + 建议等级)
+const PROJECT_DICT = {
+  '电商事业部': [
+    { name: '核心APP V6.0 大版本迭代', owner: '李明轩', level: 'A' },
+    { name: '双11增长营销战役', owner: '王晓璐', level: 'B' },
+    { name: 'AI智能推荐引擎升级', owner: '吴俊浩', level: 'A' },
+    { name: '增长投放系统重构', owner: '许佳怡', level: 'B' },
+  ],
+  'SaaS事业部': [
+    { name: 'B端SaaS产品商业化', owner: '张子涵', level: 'A' },
+    { name: '集团统一中台建设', owner: '赵建辉', level: 'B' },
+    { name: '数据合规与隐私治理项目', owner: '刘思源', level: 'A' },
+    { name: '集团数据中台一期', owner: '高云飞', level: 'A' },
+  ],
+  '内容事业部': [
+    { name: '内容平台架构云原生迁移', owner: '陈思齐', level: 'A' },
+    { name: '品牌官网与设计系统升级', owner: '孙婉婷', level: 'B' },
+    { name: '客服AI Agent平台', owner: '林子睿', level: 'C' },
+  ],
+  '出海事业部': [
+    { name: '东南亚市场出海APP', owner: '郑文涛', level: 'D' },
+  ],
+};
+
+function initCascadingDropdowns() {
+  const subEl = document.getElementById('fldSubCompany');
+  const projEl = document.getElementById('fldProjectName');
+  const ownerEl = document.getElementById('fldOwner');
+  const levelEl = document.getElementById('fldLevel');
+
+  // 填充事业部
+  subEl.innerHTML = '<option value="">请选择事业部</option>' +
+    Object.keys(PROJECT_DICT).map(k => `<option value="${k}">${k}</option>`).join('');
+
+  // 事业部变化 → 重置项目和负责人
+  subEl.addEventListener('change', () => {
+    const subName = subEl.value;
+    const projects = PROJECT_DICT[subName] || [];
+    projEl.innerHTML = '<option value="">' + (subName ? '请选择项目' : '请先选择事业部') + '</option>' +
+      projects.map(p => `<option value="${p.name}">${p.name}</option>`).join('');
+    ownerEl.innerHTML = '<option value="">请先选择项目</option>';
+  });
+
+  // 项目变化 → 自动填充负责人和等级
+  projEl.addEventListener('change', () => {
+    const subName = subEl.value;
+    const projName = projEl.value;
+    const project = (PROJECT_DICT[subName] || []).find(p => p.name === projName);
+    if (project) {
+      ownerEl.innerHTML = `<option value="${project.owner}" selected>${project.owner}</option>`;
+      // 自动建议等级,但允许修改
+      if (!levelEl.value) levelEl.value = project.level;
+    } else {
+      ownerEl.innerHTML = '<option value="">请先选择项目</option>';
+    }
+  });
+}
+
+function initReportForm() {
+  if (reportFormInited) return;
+  reportFormInited = true;
+
+  const form = document.getElementById('reportForm');
+
+  // 期次显示
+  const now = new Date();
+  const start = new Date(now.getFullYear(), 0, 1);
+  const week = Math.ceil(((now - start) / 86400000 + start.getDay() + 1) / 7);
+  document.getElementById('periodNow').textContent = `${now.getFullYear()} W${String(week).padStart(2,'0')}`;
+  document.getElementById('submitDate').value = now.toISOString().slice(0,10);
+
+  // 初始化级联下拉(事业部 → 项目 → 负责人)
+  initCascadingDropdowns();
+
+  // 渲染3行风险
+  const riskBox = document.getElementById('riskRows');
+  riskBox.innerHTML = '';
+  for (let i = 1; i <= 3; i++) {
+    const row = document.createElement('div');
+    row.className = 'risk-row';
+    row.innerHTML = `
+      <div class="idx">${i}</div>
+      <input type="text" name="risk_${i}_desc" placeholder="风险描述">
+      <select name="risk_${i}_level">
+        <option value="">影响</option>
+        <option value="高">高</option>
+        <option value="中">中</option>
+        <option value="低">低</option>
+      </select>
+      <input type="text" name="risk_${i}_action" placeholder="应对措施">
+      <input type="text" name="risk_${i}_owner" placeholder="责任人">
+      <input type="date" name="risk_${i}_due">
+    `;
+    riskBox.appendChild(row);
+  }
+
+  // 渲染2行支持事项
+  const supportBox = document.getElementById('supportRows');
+  supportBox.innerHTML = '';
+  for (let i = 1; i <= 2; i++) {
+    const row = document.createElement('div');
+    row.className = 'support-row';
+    row.innerHTML = `
+      <textarea name="support_${i}_desc" placeholder="具体诉求"></textarea>
+      <div class="checkbox-group">
+        <label><input type="checkbox" name="support_${i}_type" value="资源调配">资源调配</label>
+        <label><input type="checkbox" name="support_${i}_type" value="跨公司协调">跨公司协调</label>
+        <label><input type="checkbox" name="support_${i}_type" value="决策拍板">决策拍板</label>
+        <label><input type="checkbox" name="support_${i}_type" value="其他">其他</label>
+      </div>
+      <input type="date" name="support_${i}_due" placeholder="期望回复时间">
+    `;
+    supportBox.appendChild(row);
+  }
+
+  // 自动计算灯色预览
+  function updateLamps() {
+    const planned = parseFloat(document.getElementById('plannedPct').value);
+    const actual = parseFloat(document.getElementById('actualPct').value);
+    const total = parseFloat(document.getElementById('totalBudget').value);
+    const used = parseFloat(document.getElementById('usedBudget').value);
+
+    const pLamp = calcProgressLamp(
+      isNaN(planned) ? null : planned,
+      isNaN(actual) ? null : actual
+    );
+    const bLamp = calcBudgetLamp(
+      isNaN(total) ? null : total,
+      isNaN(used) ? null : used,
+      isNaN(planned) ? null : planned
+    );
+
+    setLampPreview('progressLamp', pLamp);
+    setLampPreview('budgetLamp', bLamp);
+  }
+  function setLampPreview(id, lamp) {
+    const el = document.getElementById(id);
+    el.className = 'lamp-preview ' + (lamp || 'empty');
+    el.innerHTML = `<span class="dot"></span>${lamp ? lampLabel(lamp) : '—'}`;
+  }
+  ['plannedPct','actualPct','totalBudget','usedBudget'].forEach(id =>
+    document.getElementById(id).addEventListener('input', updateLamps)
+  );
+
+  // 草稿自动保存
+  const draftFields = form.querySelectorAll('input, select, textarea');
+  function saveDraft() {
+    const draft = {};
+    new FormData(form).forEach((v, k) => {
+      if (draft[k] !== undefined) {
+        draft[k] = [].concat(draft[k], v);
+      } else {
+        draft[k] = v;
+      }
+    });
+    localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+    document.getElementById('autoSaveHint').textContent =
+      `已自动保存 ${new Date().toLocaleTimeString('zh-CN', {hour12:false})}`;
+  }
+  draftFields.forEach(f => f.addEventListener('change', saveDraft));
+  draftFields.forEach(f => f.addEventListener('blur', saveDraft));
+
+  // 加载草稿
+  try {
+    const draft = JSON.parse(localStorage.getItem(DRAFT_KEY) || '{}');
+    // 先恢复事业部,触发change以填充项目下拉
+    if (draft.subCompany) {
+      const subEl = document.getElementById('fldSubCompany');
+      subEl.value = draft.subCompany;
+      subEl.dispatchEvent(new Event('change'));
+    }
+    // 再恢复项目,触发change以填充负责人
+    if (draft.projectName) {
+      const projEl = document.getElementById('fldProjectName');
+      projEl.value = draft.projectName;
+      projEl.dispatchEvent(new Event('change'));
+    }
+    // 恢复其他字段
+    Object.entries(draft).forEach(([k, v]) => {
+      if (k === 'subCompany' || k === 'projectName') return;
+      const els = form.querySelectorAll(`[name="${k}"]`);
+      if (els.length === 0) return;
+      if (els[0].type === 'checkbox') {
+        const vals = [].concat(v);
+        els.forEach(e => { e.checked = vals.includes(e.value); });
+      } else {
+        els[0].value = v;
+      }
+    });
+    if (Object.keys(draft).length > 0) updateLamps();
+  } catch (e) {}
+
+  // 加载示例
+  document.getElementById('loadSampleBtn').addEventListener('click', () => {
+    if (!confirm('加载示例数据将覆盖当前填写内容,确认继续?')) return;
+    fillSampleData();
+    updateLamps();
+    saveDraft();
+  });
+
+  // 重置
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    if (!confirm('确认清空所有填写内容?')) return;
+    form.reset();
+    localStorage.removeItem(DRAFT_KEY);
+    // 重新初始化级联下拉(reset 会清空 select 选项)
+    initCascadingDropdowns();
+    updateLamps();
+    document.getElementById('submitDate').value = new Date().toISOString().slice(0,10);
+    document.getElementById('autoSaveHint').textContent = '未填写';
+  });
+
+  // 提交
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const fd = new FormData(form);
+    const data = {};
+    // 处理多选支持类型
+    for (let [k, v] of fd.entries()) {
+      if (k.startsWith('support_') && k.endsWith('_type')) {
+        if (!data[k]) data[k] = [];
+        data[k].push(v);
+      } else {
+        data[k] = v;
+      }
+    }
+
+    // 计算灯色
+    const planned = parseFloat(data.plannedPct) || null;
+    const actual = parseFloat(data.actualPct) || null;
+    const total = parseFloat(data.totalBudget) || null;
+    const used = parseFloat(data.usedBudget) || null;
+
+    const progressLamp = calcProgressLamp(planned, actual);
+    const budgetLamp = calcBudgetLamp(total, used, planned);
+    const milestoneLamp = data.milestoneLamp || null;
+    const qualityLamp = data.qualityLamp || null;
+    const overallLamp = combineLamp(progressLamp, budgetLamp, milestoneLamp, qualityLamp);
+
+    if (!overallLamp) {
+      alert('请至少填写进度信息以生成灯色');
+      return;
+    }
+
+    // 是否需CEO决策(任何support有具体诉求且非"无"则记为是)
+    let needCEO = false;
+    for (let i = 1; i <= 2; i++) {
+      const desc = data[`support_${i}_desc`] || '';
+      if (desc && desc.trim() && desc.trim() !== '无') needCEO = true;
+    }
+    // 红灯也升级
+    if (overallLamp === 'red') needCEO = true;
+
+    const record = {
+      id: 'P' + Date.now() + Math.floor(Math.random()*100),
+      submittedAt: new Date().toISOString(),
+      period: document.getElementById('periodNow').textContent,
+      data,
+      lamps: {
+        progress: progressLamp,
+        budget: budgetLamp,
+        milestone: milestoneLamp,
+        quality: qualityLamp,
+        overall: overallLamp
+      },
+      needCEO
+    };
+
+    addReport(record);
+    localStorage.removeItem(DRAFT_KEY);
+    form.reset();
+    initCascadingDropdowns();
+    updateLamps();
+    document.getElementById('submitDate').value = new Date().toISOString().slice(0,10);
+    document.getElementById('autoSaveHint').textContent = '未填写';
+
+    showToast(`已提交 · 综合灯色:${lampLabel(overallLamp)} · 已同步至CEO仪表板`, 'success');
+    setTimeout(() => location.hash = '#/dashboard', 1200);
+  });
+
+  updateLamps();
+}
+
+function fillSampleData() {
+  const sample = {
+    subCompany: '电商事业部',
+    projectName: '核心APP V6.0 大版本迭代',
+    level: 'A',
+    owner: '李明轩',
+    startDate: '2025-09-01',
+    endDate: '2026-03-30',
+    plannedPct: 70,
+    actualPct: 45,
+    progressNote: 'iOS架构改造遇阻,进度严重滞后',
+    totalBudget: 1200,
+    usedBudget: 1100,
+    budgetNote: '团队加班费用超支,需追加预算',
+    milestonePlan: '灰度全量上线',
+    milestoneActual: '灰度2%遇崩溃问题暂停',
+    milestoneLamp: 'red',
+    qualityPlan: '灰度环境崩溃率<0.1%',
+    qualityActual: '当前崩溃率3.2%',
+    qualityLamp: 'red',
+    qualityNote: '已定位至WebView组件',
+    thisWeekProgress: '1. 完成新首页"猜你喜欢"模块灰度\n2. 支付链路重构联调通过\n3. iOS端崩溃问题已定位至WebView组件',
+    nextWeekPlan: '1. 修复iOS崩溃并发起二次灰度\n2. 推进Android端性能优化\n3. 与增长团队对齐新上线时间',
+    risk_1_desc: 'iOS端新架构改造引入诡异崩溃,灰度环境闪退率达3.2%',
+    risk_1_level: '高',
+    risk_1_action: '回滚至上一稳定分支,集团iOS专家组介入定位',
+    risk_1_owner: '李明轩',
+    risk_1_due: '2026-01-31',
+    risk_2_desc: '用户增长团队推广预算已发,版本无法按期上线将造成浪费',
+    risk_2_level: '高',
+    risk_2_action: '与增长团队协调推迟投放节奏,优先稳定性',
+    risk_2_owner: '增长总监',
+    risk_2_due: '2025-12-15',
+    risk_3_desc: '春节冷启动期影响版本验证',
+    risk_3_level: '中',
+    risk_3_action: '提前调整发版节奏,留足观察期',
+    risk_3_owner: '产品经理',
+    risk_3_due: '2026-01-20',
+    support_1_desc: '建议集团技术中台支援2名iOS高级工程师驻场1周,加速崩溃定位',
+    support_1_due: '2025-12-20',
+  };
+
+  // 先填子公司,触发change事件加载项目下拉
+  const subEl = document.getElementById('fldSubCompany');
+  if (subEl) {
+    subEl.value = sample.subCompany;
+    subEl.dispatchEvent(new Event('change'));
+  }
+  // 再填项目名,触发change事件加载负责人
+  const projEl = document.getElementById('fldProjectName');
+  if (projEl) {
+    projEl.value = sample.projectName;
+    projEl.dispatchEvent(new Event('change'));
+  }
+  // 其他字段直接填
+  Object.entries(sample).forEach(([k, v]) => {
+    if (k === 'subCompany' || k === 'projectName') return;
+    const el = document.querySelector(`#reportForm [name="${k}"]`);
+    if (el) el.value = v;
+  });
+}
+
+/* ============================================================
+ * 仪表板
+ * ============================================================ */
+let currentFilter = 'all';
+
+function renderDashboard() {
+  const reports = getAllReports();
+  const filtered = filterReports(reports);
+
+  // 更新元信息
+  document.getElementById('totalSubmissions').textContent = reports.length;
+  if (reports.length > 0) {
+    const latest = reports.reduce((a, b) =>
+      new Date(b.submittedAt) > new Date(a.submittedAt) ? b : a);
+    const d = new Date(latest.submittedAt);
+    document.getElementById('lastUpdate').textContent =
+      `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+  } else {
+    document.getElementById('lastUpdate').textContent = '尚无数据';
+  }
+
+  // KPI
+  const stats = {
+    total: reports.length,
+    green: reports.filter(r => r.lamps.overall === 'green').length,
+    yellow: reports.filter(r => r.lamps.overall === 'yellow').length,
+    red: reports.filter(r => r.lamps.overall === 'red').length,
+    needCEO: reports.filter(r => r.needCEO).length
+  };
+  document.getElementById('kpiTotal').textContent = stats.total;
+  document.getElementById('kpiGreen').textContent = stats.green;
+  document.getElementById('kpiYellow').textContent = stats.yellow;
+  document.getElementById('kpiRed').textContent = stats.red;
+
+  // 行动建议
+  renderActions(stats);
+
+  // 子公司表
+  renderSubTable(reports);
+
+  // 风险圆环
+  renderRiskRing(stats);
+
+  // 项目明细
+  renderDetailTable(filtered);
+}
+
+function filterReports(reports) {
+  if (currentFilter === 'all') return reports;
+  if (['red','yellow','green'].includes(currentFilter)) {
+    return reports.filter(r => r.lamps.overall === currentFilter);
+  }
+  if (currentFilter === 'A') {
+    return reports.filter(r => r.data.level === 'A');
+  }
+  if (currentFilter === 'needCEO') {
+    return reports.filter(r => r.needCEO);
+  }
+  return reports;
+}
+
+function renderActions(stats) {
+  const body = document.getElementById('actionsBody');
+  const items = [];
+
+  if (stats.red > 0) {
+    items.push({
+      tag: 'red', label: '必须介入',
+      content: `本周共 <strong>${stats.red}</strong> 个红灯项目,需CEO在周一看板会上重点过问。建议预留每个项目 5-8 分钟。`,
+      ctrl: '查看红灯 →',
+      filter: 'red'
+    });
+  } else {
+    items.push({
+      tag: 'red', label: '红灯项目',
+      content: '本周无红灯项目,集团运行稳健。',
+      ctrl: null
+    });
+  }
+
+  if (stats.yellow > 0) {
+    items.push({
+      tag: 'yellow', label: '需要关注',
+      content: `本周共 <strong>${stats.yellow}</strong> 个黄灯项目,由事业部负责人主导处理,CEO抽查即可。`,
+      ctrl: '查看黄灯 →',
+      filter: 'yellow'
+    });
+  } else {
+    items.push({
+      tag: 'yellow', label: '黄灯项目',
+      content: '本周无黄灯项目。',
+      ctrl: null
+    });
+  }
+
+  if (stats.needCEO > 0) {
+    items.push({
+      tag: 'neutral', label: '待CEO决策',
+      content: `本周有 <strong>${stats.needCEO}</strong> 项需CEO拍板的事项(资源调配 / 跨公司协调 / 决策)。`,
+      ctrl: '查看升级事项 →',
+      filter: 'red'
+    });
+  } else {
+    items.push({
+      tag: 'neutral', label: '升级事项',
+      content: '本周无需CEO直接决策的事项。',
+      ctrl: null
+    });
+  }
+
+  body.innerHTML = items.map(it => `
+    <div class="action-item">
+      <span class="tag ${it.tag}"><span class="dot"></span>${it.label}</span>
+      <div class="content">${it.content}</div>
+      ${it.ctrl ? `<span class="ctrl" data-filter="${it.filter}">${it.ctrl}</span>` : '<span></span>'}
+    </div>
+  `).join('');
+
+  body.querySelectorAll('.ctrl[data-filter]').forEach(el => {
+    el.addEventListener('click', () => {
+      currentFilter = el.dataset.filter;
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.filter === currentFilter);
+      });
+      renderDashboard();
+      // 滚动到明细
+      document.querySelector('.detail-panel').scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
+}
+
+function renderSubTable(reports) {
+  const body = document.getElementById('subTableBody');
+  // 按子公司分组
+  const groups = {};
+  reports.forEach(r => {
+    const sub = r.data.subCompany || '未填写';
+    if (!groups[sub]) groups[sub] = { total: 0, green: 0, yellow: 0, red: 0 };
+    groups[sub].total++;
+    groups[sub][r.lamps.overall]++;
+  });
+
+  const rows = Object.entries(groups).map(([sub, s]) => {
+    const redRate = s.total ? (s.red / s.total) : 0;
+    const score = s.total ? ((s.green*100 + s.yellow*60 + s.red*20) / s.total) : 0;
+    const barClass = score >= 75 ? '' : score >= 50 ? 'warning' : 'danger';
+    return { sub, ...s, redRate, score, barClass };
+  });
+  // 按健康度评分升序(差的在前)
+  rows.sort((a,b) => a.score - b.score);
+
+  if (rows.length === 0) {
+    body.innerHTML = `<tr><td colspan="7" style="padding:40px;text-align:center;color:var(--ink-3);font-family:var(--mono);font-size:12px;letter-spacing:1px">暂无数据 · 请前往填报页提交周报</td></tr>`;
+    return;
+  }
+
+  body.innerHTML = rows.map(r => `
+    <tr>
+      <td class="name">${r.sub}</td>
+      <td class="num">${r.total}</td>
+      <td class="num">${r.green}</td>
+      <td class="num">${r.yellow}</td>
+      <td class="num" style="color:${r.red > 0 ? 'var(--red)' : 'var(--ink)'}">${r.red}</td>
+      <td class="num" style="color:${r.redRate > 0.3 ? 'var(--red)' : r.redRate > 0.15 ? 'var(--yellow)' : 'var(--ink)'}">${(r.redRate*100).toFixed(0)}%</td>
+      <td>
+        <span class="health-bar"><span class="health-bar-fill ${r.barClass}" style="width:${r.score}%"></span></span>
+        <span class="health-score" style="color:${r.score >= 75 ? 'var(--green)' : r.score >= 50 ? 'var(--yellow)' : 'var(--red)'}">${r.score.toFixed(0)}</span>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function renderRiskRing(stats) {
+  const total = stats.total || 1;
+  const C = 2 * Math.PI * 42; // 264
+
+  // 累积绘制:绿色起始,然后黄色,然后红色
+  const greenLen = (stats.green / total) * C;
+  const yellowLen = (stats.yellow / total) * C;
+  const redLen = (stats.red / total) * C;
+
+  document.getElementById('ringGreen').setAttribute('stroke-dasharray', `${greenLen} ${C}`);
+  document.getElementById('ringYellow').setAttribute('stroke-dasharray', `${yellowLen} ${C}`);
+  document.getElementById('ringYellow').setAttribute('stroke-dashoffset', `${-greenLen}`);
+  document.getElementById('ringRed').setAttribute('stroke-dasharray', `${redLen} ${C}`);
+  document.getElementById('ringRed').setAttribute('stroke-dashoffset', `${-(greenLen + yellowLen)}`);
+
+  document.getElementById('ringTotal').textContent = stats.total;
+
+  const pct = (n) => stats.total ? `${(n/stats.total*100).toFixed(0)}%` : '0%';
+  document.getElementById('ringLegend').innerHTML = `
+    <div class="legend-item">
+      <span class="lt"><span class="dot" style="background:var(--green)"></span>绿灯 · 健康</span>
+      <span class="rt">${stats.green} · ${pct(stats.green)}</span>
+    </div>
+    <div class="legend-item">
+      <span class="lt"><span class="dot" style="background:var(--yellow)"></span>黄灯 · 关注</span>
+      <span class="rt">${stats.yellow} · ${pct(stats.yellow)}</span>
+    </div>
+    <div class="legend-item">
+      <span class="lt"><span class="dot" style="background:var(--red)"></span>红灯 · 介入</span>
+      <span class="rt">${stats.red} · ${pct(stats.red)}</span>
+    </div>
+  `;
+}
+
+function renderDetailTable(reports) {
+  const body = document.getElementById('detailTableBody');
+  if (reports.length === 0) {
+    body.innerHTML = `
+      <tr><td colspan="11">
+        <div class="empty-state">
+          <div class="icon">○</div>
+          ${currentFilter === 'all' ? '暂无项目周报' : `当前筛选条件下无项目`}
+          <div class="hint">点击右上方"加载演示数据"快速体验,或前往填报页提交真实数据</div>
+        </div>
+      </td></tr>`;
+    return;
+  }
+  // 红灯置顶,然后黄,然后绿
+  const order = { red: 0, yellow: 1, green: 2 };
+  const sorted = [...reports].sort((a,b) => order[a.lamps.overall] - order[b.lamps.overall]);
+
+  body.innerHTML = sorted.map((r, i) => {
+    const d = r.data;
+    const planned = parseFloat(d.plannedPct) || 0;
+    const actual = parseFloat(d.actualPct) || 0;
+    const diff = actual - planned;
+    const diffClass = diff < 0 ? 'delta-up' : diff > 0 ? 'delta-down' : 'delta-flat';
+    const totalB = parseFloat(d.totalBudget) || 0;
+    const usedB = parseFloat(d.usedBudget) || 0;
+    const topRisk = d.risk_1_desc || '—';
+
+    return `
+      <tr data-id="${r.id}" style="cursor:pointer" onclick="openDrawer('${r.id}')">
+        <td class="num" style="color:var(--ink-3)">${String(i+1).padStart(2,'0')}</td>
+        <td class="name">${d.projectName || '—'}</td>
+        <td>${d.subCompany || '—'}</td>
+        <td><span class="level-badge ${d.level}">${d.level || '—'}</span></td>
+        <td>${d.owner || '—'}</td>
+        <td class="num">${actual}%</td>
+        <td class="num ${diffClass}">${diff >= 0 ? '+' : ''}${diff.toFixed(0)}%</td>
+        <td class="num">${totalB ? `${usedB}/${totalB}` : '—'}</td>
+        <td><span class="lamp ${r.lamps.overall}"><span class="dot"></span>${lampLabel(r.lamps.overall)}</span></td>
+        <td style="max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${topRisk}</td>
+        <td>${r.needCEO ? '<span class="lamp red"><span class="dot"></span>是</span>' : '<span style="color:var(--ink-3);font-family:var(--mono);font-size:11px">否</span>'}</td>
+      </tr>
+    `;
+  }).join('');
+}
+
+/* 抽屉 */
+window.openDrawer = function(id) {
+  const reports = getAllReports();
+  const r = reports.find(x => x.id === id);
+  if (!r) return;
+  const d = r.data;
+  const submitTime = new Date(r.submittedAt);
+  document.getElementById('drTitle').textContent = d.projectName || '未命名项目';
+  document.getElementById('drMeta').textContent =
+    `${d.subCompany || '—'} · ${d.owner || '—'} · 提交于 ${submitTime.toLocaleString('zh-CN')}`;
+
+  const planned = parseFloat(d.plannedPct) || 0;
+  const actual = parseFloat(d.actualPct) || 0;
+  const diff = actual - planned;
+
+  const risks = [];
+  for (let i = 1; i <= 3; i++) {
+    if (d[`risk_${i}_desc`]) {
+      risks.push({
+        desc: d[`risk_${i}_desc`],
+        level: d[`risk_${i}_level`] || '—',
+        action: d[`risk_${i}_action`] || '—',
+        owner: d[`risk_${i}_owner`] || '—',
+        due: d[`risk_${i}_due`] || '—'
+      });
+    }
+  }
+
+  const supports = [];
+  for (let i = 1; i <= 2; i++) {
+    const desc = d[`support_${i}_desc`];
+    if (desc && desc.trim() && desc.trim() !== '无') {
+      supports.push({
+        desc,
+        types: d[`support_${i}_type`] || '—',
+        due: d[`support_${i}_due`] || '—'
+      });
+    }
+  }
+
+  document.getElementById('drBody').innerHTML = `
+    <div class="dr-section">
+      <div class="lbl">综合健康度</div>
+      <div class="stat-row">
+        <div class="stat-cell">
+          <div class="v"><span class="lamp ${r.lamps.overall}" style="font-size:14px;padding:6px 14px"><span class="dot"></span>${lampLabel(r.lamps.overall)}</span></div>
+          <div class="l">综合</div>
+        </div>
+        <div class="stat-cell">
+          <div class="v" style="color:${r.lamps.progress === 'red' ? 'var(--red)' : r.lamps.progress === 'yellow' ? 'var(--yellow)' : 'var(--green)'}">${r.lamps.progress ? lampLabel(r.lamps.progress) : '—'}</div>
+          <div class="l">进度灯</div>
+        </div>
+        <div class="stat-cell">
+          <div class="v" style="color:${r.lamps.budget === 'red' ? 'var(--red)' : r.lamps.budget === 'yellow' ? 'var(--yellow)' : 'var(--green)'}">${r.lamps.budget ? lampLabel(r.lamps.budget) : '—'}</div>
+          <div class="l">预算灯</div>
+        </div>
+        <div class="stat-cell">
+          <div class="v" style="color:${r.needCEO ? 'var(--red)' : 'var(--ink-3)'};font-size:18px">${r.needCEO ? '需决策' : '无'}</div>
+          <div class="l">CEO 介入</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dr-section">
+      <div class="lbl">进度 & 预算</div>
+      <div class="stat-row">
+        <div class="stat-cell"><div class="v">${planned}%</div><div class="l">计划进度</div></div>
+        <div class="stat-cell"><div class="v">${actual}%</div><div class="l">实际进度</div></div>
+        <div class="stat-cell"><div class="v" style="color:${diff < -10 ? 'var(--red)' : diff < 0 ? 'var(--yellow)' : 'var(--green)'}">${diff >= 0 ? '+' : ''}${diff.toFixed(0)}%</div><div class="l">偏差</div></div>
+        <div class="stat-cell"><div class="v" style="font-size:18px">${d.totalBudget ? `${d.usedBudget||0}/${d.totalBudget}` : '—'}</div><div class="l">预算(万)</div></div>
+      </div>
+    </div>
+
+    <div class="dr-section">
+      <div class="lbl">本期进展</div>
+      <div style="white-space:pre-wrap;font-size:13px;color:var(--ink-2);line-height:1.7;padding:12px 14px;background:var(--bg);border-left:2px solid var(--accent)">${d.thisWeekProgress || '—'}</div>
+    </div>
+
+    <div class="dr-section">
+      <div class="lbl">下期计划</div>
+      <div style="white-space:pre-wrap;font-size:13px;color:var(--ink-2);line-height:1.7;padding:12px 14px;background:var(--bg);border-left:2px solid var(--accent)">${d.nextWeekPlan || '—'}</div>
+    </div>
+
+    <div class="dr-section">
+      <div class="lbl">Top 风险</div>
+      ${risks.length === 0 ? '<div style="color:var(--ink-3);font-size:13px">未填写风险</div>' :
+        risks.map((rk, i) => `
+          <div style="border:1px solid var(--line);padding:12px 14px;margin-bottom:8px">
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+              <strong style="font-family:var(--serif)">#${i+1} ${rk.desc}</strong>
+              <span class="lamp ${rk.level === '高' ? 'red' : rk.level === '中' ? 'yellow' : 'green'}" style="font-size:10px;padding:2px 8px"><span class="dot"></span>${rk.level}</span>
+            </div>
+            <div style="font-size:12px;color:var(--ink-2);line-height:1.6">
+              <div>应对:${rk.action}</div>
+              <div style="color:var(--ink-3);font-family:var(--mono);font-size:11px;margin-top:4px">责任人:${rk.owner} · 截止:${rk.due}</div>
+            </div>
+          </div>
+        `).join('')
+      }
+    </div>
+
+    ${supports.length > 0 ? `
+    <div class="dr-section">
+      <div class="lbl" style="color:var(--red)">⚐ 需CEO支持事项</div>
+      ${supports.map(s => `
+        <div style="border:1px solid var(--red);padding:12px 14px;margin-bottom:8px;background:var(--red-bg)">
+          <div style="margin-bottom:6px;font-weight:600">${s.desc}</div>
+          <div style="font-size:11px;color:var(--ink-2);font-family:var(--mono);letter-spacing:0.5px">
+            类型:${Array.isArray(s.types) ? s.types.join(' / ') : s.types} · 期望回复:${s.due}
+          </div>
+        </div>
+      `).join('')}
+    </div>
+    ` : ''}
+
+    <div class="dr-section">
+      <div class="lbl">提交信息</div>
+      <div style="font-size:13px;color:var(--ink-2)">
+        负责人:<strong>${d.owner || '—'}</strong>  ·  事业部:<strong>${d.subCompany || '—'}</strong>  ·  提交日期:${d.submitDate || '—'}
+      </div>
+    </div>
+  `;
+
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('drawerOverlay').classList.add('open');
+};
+
+document.getElementById('drClose').addEventListener('click', closeDrawer);
+document.getElementById('drawerOverlay').addEventListener('click', closeDrawer);
+function closeDrawer() {
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('drawerOverlay').classList.remove('open');
+}
+
+/* 筛选 */
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    currentFilter = btn.dataset.filter;
+    document.querySelectorAll('.filter-btn').forEach(b => {
+      b.classList.toggle('active', b === btn);
+    });
+    renderDashboard();
+  });
+});
+
+/* 演示数据 */
+document.getElementById('seedBtn').addEventListener('click', () => {
+  if (!confirm('将清空当前数据并重置为8条演示数据,确认?')) return;
+  saveReports([]);
+  seedDemoData();
+  renderDashboard();
+  showToast('已重置为演示数据', 'success');
+});
+document.getElementById('clearBtn').addEventListener('click', () => {
+  if (!confirm('确认清空所有周报数据?此操作不可撤销。')) return;
+  saveReports([]);
+  renderDashboard();
+  showToast('已清空');
+});
+document.getElementById('exportBtn').addEventListener('click', () => {
+  const data = getAllReports();
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `集团项目周报_${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+});
+
+function seedDemoData() {
+  const demos = [
+    { projectName:'核心APP V6.0 大版本迭代', subCompany:'电商事业部', level:'A', owner:'李明轩',
+      plannedPct:70, actualPct:45, totalBudget:1200, usedBudget:1100,
+      risk_1_desc:'iOS端新架构改造引入诡异崩溃,灰度环境闪退率达3.2%', risk_1_level:'高',
+      risk_1_action:'回滚至上一稳定分支,集团iOS专家组介入定位', risk_1_owner:'李明轩', risk_1_due:'2026-01-31',
+      risk_2_desc:'用户增长团队推广预算已发,版本无法按期上线将造成浪费', risk_2_level:'高',
+      risk_2_action:'与增长团队协调推迟投放节奏,优先稳定性', risk_2_owner:'增长总监', risk_2_due:'2025-12-15',
+      thisWeekProgress:'1. 完成新首页"猜你喜欢"模块灰度\n2. 支付链路重构联调通过\n3. iOS端崩溃问题已定位至WebView组件',
+      nextWeekPlan:'1. 修复iOS崩溃并发起二次灰度\n2. 推进Android端性能优化\n3. 与增长团队对齐新上线时间',
+      support_1_desc:'建议集团技术中台支援2名iOS高级工程师驻场1周,加速崩溃定位', support_1_due:'2025-12-20',
+      submitDate:'2026-05-08' },
+
+    { projectName:'B端SaaS产品商业化', subCompany:'SaaS事业部', level:'A', owner:'张子涵',
+      plannedPct:45, actualPct:42, totalBudget:500, usedBudget:220,
+      risk_1_desc:'KA客户对私有化部署需求强烈,与现有架构冲突', risk_1_level:'中',
+      risk_1_action:'评估混合云方案,与3家头部客户单独商谈SLA', risk_1_owner:'张子涵', risk_1_due:'2026-06-30',
+      thisWeekProgress:'1. 完成PLG增长漏斗埋点\n2. 自助试用流程上线\n3. 已签约付费客户达47家',
+      nextWeekPlan:'1. 上线团队版功能\n2. 启动渠道伙伴招募\n3. 推进首个企业版客户POC',
+      submitDate:'2026-05-08' },
+
+    { projectName:'双11增长营销战役', subCompany:'电商事业部', level:'B', owner:'王晓璐',
+      plannedPct:85, actualPct:88, totalBudget:80, usedBudget:75,
+      risk_1_desc:'无', risk_1_level:'低',
+      thisWeekProgress:'1. 抖音达人种草矩阵全部铺开\n2. 私域社群GMV超预期30%\n3. 站内首焦CTR较去年提升42%',
+      nextWeekPlan:'1. 复盘首战数据\n2. 启动二轮投放\n3. 准备返场活动',
+      submitDate:'2026-05-09' },
+
+    { projectName:'集团统一中台建设', subCompany:'SaaS事业部', level:'B', owner:'赵建辉',
+      plannedPct:60, actualPct:45, totalBudget:300, usedBudget:175,
+      risk_1_desc:'各BU业务模型差异大,统一API标准推进阻力大', risk_1_level:'中',
+      risk_1_action:'成立架构委员会,CTO每周拉通,分批接入', risk_1_owner:'赵建辉', risk_1_due:'2026-06-30',
+      thisWeekProgress:'1. 用户中心服务已接入3个BU\n2. 订单中心API规范评审通过',
+      nextWeekPlan:'1. 组织架构委员会会议\n2. 推进剩余4个BU接入用户中心',
+      submitDate:'2026-05-08' },
+
+    { projectName:'内容平台架构云原生迁移', subCompany:'内容事业部', level:'A', owner:'陈思齐',
+      plannedPct:50, actualPct:20, totalBudget:600, usedBudget:380,
+      risk_1_desc:'核心SRE团队3人离职,Kafka迁移关键节点停滞', risk_1_level:'高',
+      risk_1_action:'紧急启动外包+猎头招聘,集团HR绿色通道支援', risk_1_owner:'陈思齐', risk_1_due:'2025-12-31',
+      risk_2_desc:'迁移期间日均2亿请求的服务可用性风险', risk_2_level:'高',
+      risk_2_action:'制定流量双写+灰度回滚方案,夜间窗口分批切换', risk_2_owner:'技术总监', risk_2_due:'2026-02-28',
+      thisWeekProgress:'1. 紧急启动外包对接\n2. 服务网格POC完成\n3. 已锁定2名候选人面试中',
+      nextWeekPlan:'1. 完成2名SRE到岗\n2. 启动应急预案演练\n3. 推进Kafka集群迁移',
+      support_1_desc:'建议集团HR紧急支援高级SRE 2名,直接对接集团基础设施部',
+      support_1_due:'2025-12-15',
+      submitDate:'2026-05-09' },
+
+    { projectName:'品牌官网与设计系统升级', subCompany:'内容事业部', level:'B', owner:'孙婉婷',
+      plannedPct:30, actualPct:28, totalBudget:150, usedBudget:42,
+      risk_1_desc:'新设计语言需CEO评审通过', risk_1_level:'中',
+      risk_1_action:'本月提报评审会,争取一次通过', risk_1_owner:'孙婉婷', risk_1_due:'2025-12-20',
+      thisWeekProgress:'1. 用户调研报告完成\n2. 设计系统Tokens初稿提交\n3. 完成3轮内部评审',
+      nextWeekPlan:'1. 提报CEO评审\n2. 启动组件库开发\n3. 推进官网重构POC',
+      submitDate:'2026-05-08' },
+
+    { projectName:'AI智能推荐引擎升级', subCompany:'电商事业部', level:'A', owner:'吴俊浩',
+      plannedPct:55, actualPct:52, totalBudget:800, usedBudget:430,
+      risk_1_desc:'大模型推理成本超预算30%,商业模型需重新评估', risk_1_level:'中',
+      risk_1_action:'启动模型蒸馏与量化,降低推理成本至可接受水平', risk_1_owner:'吴俊浩', risk_1_due:'2026-01-15',
+      thisWeekProgress:'1. 召回模型A/B实验完成,CTR提升18%\n2. 排序模型上线灰度\n3. 完成首仓推理集群部署',
+      nextWeekPlan:'1. 启动第二仓\n2. 性能压测与成本评估\n3. 蒸馏方案POC',
+      submitDate:'2026-05-09' },
+
+    { projectName:'东南亚市场出海APP', subCompany:'出海事业部', level:'D', owner:'郑文涛',
+      plannedPct:25, actualPct:25, totalBudget:200, usedBudget:48,
+      risk_1_desc:'印尼GDPR类合规审查存在不确定性', risk_1_level:'中',
+      risk_1_action:'聘请当地法律顾问完成合规评估,数据本地化方案落地', risk_1_owner:'郑文涛', risk_1_due:'2026-03-31',
+      thisWeekProgress:'1. 完成3国市场调研\n2. 首批本地KOL接洽完成\n3. APP本地化翻译启动',
+      nextWeekPlan:'1. 锁定2家本地代理\n2. 启动Beta版本测试\n3. 完成印尼合规咨询',
+      submitDate:'2026-05-09' },
+
+    { projectName:'数据合规与隐私治理项目', subCompany:'SaaS事业部', level:'A', owner:'刘思源',
+      plannedPct:40, actualPct:30, totalBudget:1500, usedBudget:680,
+      risk_1_desc:'《个人信息保护法》新规要求12月底前完成全部合规改造', risk_1_level:'高',
+      risk_1_action:'评估第三方合规咨询,与法务合署办公', risk_1_owner:'刘思源', risk_1_due:'2026-02-15',
+      risk_2_desc:'各产品线SDK整改进度不一,缺乏统一抓手', risk_2_level:'中',
+      risk_2_action:'集团合规委员会牵头,纳入各BU年度考核', risk_2_owner:'合规总监', risk_2_due:'2026-03-30',
+      thisWeekProgress:'1. 完成全集团SDK摸底\n2. 用户隐私协议三审通过\n3. 数据资产目录整理完成80%',
+      nextWeekPlan:'1. 推进国产SDK替代尽调\n2. 启动各BU首轮整改\n3. 提交合规整改路线图',
+      support_1_desc:'监管时间紧,建议集团合规委员会升级为CEO直管,各BU一把手承诺时点',
+      support_1_due:'2026-01-10',
+      submitDate:'2026-05-08' },
+
+    { projectName:'集团数据中台一期', subCompany:'SaaS事业部', level:'A', owner:'高云飞',
+      plannedPct:65, actualPct:62, totalBudget:900, usedBudget:540,
+      risk_1_desc:'各业务系统数据口径不统一,清洗工作量超预期20%', risk_1_level:'中',
+      risk_1_action:'成立数据治理小组,与各BU数据负责人每周对账', risk_1_owner:'高云飞', risk_1_due:'2026-04-30',
+      thisWeekProgress:'1. 主数据模型评审通过\n2. 完成3个核心系统接入\n3. 集团经营看板原型上线',
+      nextWeekPlan:'1. 完成剩余2个系统接入\n2. 启动BI层开发\n3. 推进自助分析平台',
+      submitDate:'2026-05-09' },
+
+    { projectName:'增长投放系统重构', subCompany:'电商事业部', level:'B', owner:'许佳怡',
+      plannedPct:50, actualPct:38, totalBudget:400, usedBudget:215,
+      risk_1_desc:'各渠道API频繁变更,适配工作量持续超预期', risk_1_level:'中',
+      risk_1_action:'建立渠道适配层,纳入投放团队周例会跟进', risk_1_owner:'许佳怡', risk_1_due:'2026-02-28',
+      thisWeekProgress:'1. 完成抖音/快手新API适配\n2. 创意素材自动生成上线\n3. ROI实时看板内测',
+      nextWeekPlan:'1. 完成腾讯广点通对接\n2. 启动跨渠道归因模型\n3. 推进自动出价策略POC',
+      submitDate:'2026-05-08' },
+
+    { projectName:'客服AI Agent平台', subCompany:'内容事业部', level:'C', owner:'林子睿',
+      plannedPct:75, actualPct:78, totalBudget:120, usedBudget:88,
+      risk_1_desc:'无', risk_1_level:'低',
+      thisWeekProgress:'1. 知识库训练完成\n2. 内测意图识别准确率达92%\n3. 人工客服转化率降低35%',
+      nextWeekPlan:'1. 启动全量公测\n2. 接入工单系统\n3. 准备多语言扩展',
+      submitDate:'2026-05-09' },
+  ];
+
+  demos.forEach(d => {
+    const planned = d.plannedPct;
+    const actual = d.actualPct;
+    const total = d.totalBudget;
+    const used = d.usedBudget;
+    const pLamp = calcProgressLamp(planned, actual);
+    const bLamp = calcBudgetLamp(total, used, planned);
+    const overall = combineLamp(pLamp, bLamp);
+    const needCEO = overall === 'red' || (d.support_1_desc && d.support_1_desc.trim() !== '无');
+
+    addReport({
+      id: 'DEMO' + Date.now() + Math.random().toString(36).slice(2,7),
+      submittedAt: new Date().toISOString(),
+      period: document.getElementById('periodNow')?.textContent || '2026 W19',
+      data: d,
+      lamps: {
+        progress: pLamp,
+        budget: bLamp,
+        milestone: null,
+        quality: null,
+        overall
+      },
+      needCEO
+    });
+  });
+}
+
+/* ============================================================
+ * Toast
+ * ============================================================ */
+function showToast(msg, type) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (type ? ' ' + type : '');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+/* ============================================================
+ * 跨标签页同步
+ * ============================================================ */
+window.addEventListener('storage', (e) => {
+  if (e.key === STORAGE_KEY) {
+    const currentView = location.hash.replace(/^#\//, '') || 'home';
+    if (currentView === 'dashboard') renderDashboard();
+  }
+});
+
+/* ============================================================
+ * 首次访问自动预置 demo 数据
+ * ============================================================ */
+const DEMO_SEEDED_FLAG = 'demoSeeded_v2';
+function ensureDemoData() {
+  const seeded = localStorage.getItem(DEMO_SEEDED_FLAG);
+  // v2: 升级标记时强制清空旧数据并重置
+  if (!seeded) {
+    // 清除旧版本标记
+    localStorage.removeItem('demoSeeded_v1');
+    // 重置数据
+    saveReports([]);
+    seedDemoData();
+    localStorage.setItem(DEMO_SEEDED_FLAG, '1');
+  }
+}
+
+/* 启动 */
+ensureDemoData();
+route();
+</script>
+</body>
+</html>
